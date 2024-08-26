@@ -1,9 +1,20 @@
+import About from '../About/About';
 import Header from '../Header/Header';
+import Services from '../Services/Services';
 
 const Home = () => {
     return (
         <section>
-            <Header />
+            <div>
+                <Header />
+            </div>
+
+            <div className="my-20">
+                <About />
+            </div>
+            <div>
+                <Services />
+            </div>
         </section>
     );
 };
