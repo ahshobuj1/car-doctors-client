@@ -1,8 +1,13 @@
 import {Link} from 'react-router-dom';
 import sighInImg from '../../assets/images/login/login.svg';
 import {FaGoogle, FaFacebook, FaLinkedin} from 'react-icons/fa';
+import {useContext} from 'react';
+import {AuthContext} from '../../context/UserContext';
+import Swal from 'sweetalert2';
 
 const SignUp = () => {
+    const {createUser} = useContext(AuthContext);
+
     const handleFormValue = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -10,6 +15,18 @@ const SignUp = () => {
         const email = form.email.value;
         const password = form.password.value;
         console.log(name, email, password);
+
+        createUser(email, password)
+            .then((res) => {
+                console.log('created user ', res.user);
+                form.reset();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success...',
+                    text: 'User Created successfully',
+                });
+            })
+            .catch((err) => console.log(err.message));
     };
 
     return (

@@ -1,14 +1,31 @@
 import {Link} from 'react-router-dom';
 import sighInImg from '../../assets/images/login/login.svg';
 import {FaGoogle, FaFacebook, FaLinkedin} from 'react-icons/fa';
+import {useContext} from 'react';
+import {AuthContext} from '../../context/UserContext';
+import Swal from 'sweetalert2';
 
 const SignIn = () => {
+    const {loginUser} = useContext(AuthContext);
+
     const handleFormValue = (e) => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
         console.log(email, password);
+
+        loginUser(email, password)
+            .then((res) => {
+                console.log('user login', res.user);
+                form.reset();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success...',
+                    text: 'User Login successfully',
+                });
+            })
+            .catch((err) => console.log(err.message));
     };
 
     return (
