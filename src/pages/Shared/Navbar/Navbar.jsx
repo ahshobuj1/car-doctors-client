@@ -58,6 +58,12 @@ const Navbar = () => {
                 <ul className="menu menu-horizontal px-1">{navItems}</ul>
             </div>
             <div className="navbar-end">
+                <Link to="/signin">
+                    <button className="btn btn-neutral mr-3 btn-sm">
+                        Login
+                    </button>
+                </Link>
+
                 <button className="btn btn-outline text-orange-600 border-orange-600">
                     Appointment
                 </button>
