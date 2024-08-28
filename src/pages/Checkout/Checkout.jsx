@@ -1,25 +1,55 @@
+import {useContext} from 'react';
 import {useLoaderData} from 'react-router-dom';
+import {AuthContext} from '../../context/UserContext';
 
 const Checkout = () => {
     const service = useLoaderData();
-    const {title} = service;
+    const {title, img} = service;
+    const {user} = useContext(AuthContext);
+
+    const handleCheckout = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const size = form.size.value;
+        const date = form.date.value;
+        const titleName = form.tname.value;
+        const email = form.email.value;
+        const message = form.message.value;
+
+        const bookings = {size, date, titleName, img, email, message};
+        console.log(bookings);
+        form.reset();
+
+        fetch('http://localhost:5000/bookings', {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify(bookings),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => console.log(err.message));
+    };
 
     return (
         <section>
             <h1>{service.title}</h1>
             <div className="bg-[#F3F3F3] p-5 md:p-24 rounded-xl">
-                <form>
+                <form onSubmit={handleCheckout}>
                     <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
                         <div>
                             <input
                                 type="text"
-                                name="name"
+                                name="tname"
+                                defaultValue={title}
                                 id=""
                                 required
-                                placeholder="Name"
+                                placeholder="Service"
                                 className="w-full rounded-xl h-14 pl-5"
                             />
                         </div>
+
                         <div>
                             <input
                                 type="date"
@@ -33,18 +63,19 @@ const Checkout = () => {
                         <div>
                             <input
                                 type="text"
-                                name="service"
-                                defaultValue={title}
+                                name="size"
                                 id=""
                                 required
-                                placeholder="Service"
+                                placeholder="Size"
                                 className="w-full rounded-xl h-14 pl-5"
                             />
                         </div>
+
                         <div>
                             <input
                                 type="email"
                                 name="email"
+                                defaultValue={user?.email}
                                 id=""
                                 required
                                 placeholder="Email"
@@ -59,7 +90,9 @@ const Checkout = () => {
                                 className="w-full rounded-xl h-40 p-5"></textarea>
                         </div>
                     </div>
-                    <button className="btn bg-orange-600 text-white my-6 w-full">
+                    <button
+                        type="submit"
+                        className="btn bg-orange-600 text-white my-6 w-full">
                         Order Confirm
                     </button>
                 </form>

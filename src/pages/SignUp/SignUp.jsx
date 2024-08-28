@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import sighInImg from '../../assets/images/login/login.svg';
 import {FaGoogle, FaFacebook, FaLinkedin} from 'react-icons/fa';
 import {useContext} from 'react';
@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 
 const SignUp = () => {
     const {createUser, signInWithGoogle} = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleFormValue = (e) => {
         e.preventDefault();
@@ -25,6 +26,7 @@ const SignUp = () => {
                     title: 'Success...',
                     text: 'User Created successfully',
                 });
+                navigate(location?.state ? location?.state : '/');
             })
             .catch((err) => console.log(err.message));
     };
@@ -33,6 +35,7 @@ const SignUp = () => {
         signInWithGoogle()
             .then((res) => {
                 console.log('google login', res.user);
+                navigate(location?.state ? location?.state : '/');
             })
             .catch((err) => console.log(err.message));
     };
