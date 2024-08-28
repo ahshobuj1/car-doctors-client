@@ -6,7 +6,7 @@ import {AuthContext} from '../../context/UserContext';
 import Swal from 'sweetalert2';
 
 const SignIn = () => {
-    const {loginUser} = useContext(AuthContext);
+    const {loginUser, signInWithGoogle} = useContext(AuthContext);
 
     const handleFormValue = (e) => {
         e.preventDefault();
@@ -24,6 +24,14 @@ const SignIn = () => {
                     title: 'Success...',
                     text: 'User Login successfully',
                 });
+            })
+            .catch((err) => console.log(err.message));
+    };
+
+    const handleGoogleLogin = () => {
+        signInWithGoogle()
+            .then((res) => {
+                console.log('google login', res.user);
             })
             .catch((err) => console.log(err.message));
     };
@@ -82,7 +90,9 @@ const SignIn = () => {
                     <div className="text-center space-y-6">
                         <p className="font-medium">Or Sign In with</p>
                         <div className="flex justify-center gap-6 ">
-                            <button className="btn text-xl">
+                            <button
+                                onClick={handleGoogleLogin}
+                                className="btn text-xl">
                                 <FaGoogle />
                             </button>
                             <button className="btn text-xl">
