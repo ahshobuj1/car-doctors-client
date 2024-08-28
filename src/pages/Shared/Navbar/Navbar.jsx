@@ -45,15 +45,17 @@ const Navbar = () => {
             <li>
                 <NavLink to="/blog">Blog</NavLink>
             </li>
-            <li>
-                <NavLink to="/contact">Contact</NavLink>
-            </li>
+            {user && (
+                <li>
+                    <NavLink to="/booking">My Booking</NavLink>
+                </li>
+            )}
 
             {user ? (
                 <>
                     <button
                         onClick={handleLogOut}
-                        className="btn btn-neutral mr-3 btn-sm">
+                        className="btn btn-accent mr-3 btn-sm">
                         LogOut
                     </button>
                     <span className="text-xs md:text-sm pr-1 md:flex items-center">
@@ -62,7 +64,7 @@ const Navbar = () => {
                 </>
             ) : (
                 <Link to="/signin">
-                    <button className="btn btn-neutral mr-3 btn-sm">
+                    <button className="btn btn-accent mr-3 btn-sm">
                         Login
                     </button>
                 </Link>
