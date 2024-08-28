@@ -12,14 +12,17 @@ export const AuthContext = createContext();
 
 const UserContext = ({children}) => {
     const [user, setUser] = useState('');
+    const [loading, setLoading] = useState(true);
 
     // Create user with email and password
     const createUser = (email, password) => {
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     };
 
     // login user with email and password
     const loginUser = (email, password) => {
+        setLoading(true);
         return signInWithEmailAndPassword(auth, email, password);
     };
 
@@ -34,6 +37,7 @@ const UserContext = ({children}) => {
             if (currentUser) {
                 console.log('currentUser ', currentUser);
                 setUser(currentUser);
+                setLoading(false);
             } else {
                 setUser('');
             }
@@ -42,7 +46,7 @@ const UserContext = ({children}) => {
         return () => unsubscribe();
     }, []);
 
-    const authInfo = {user, createUser, loginUser, logOutUser};
+    const authInfo = {user, loading, createUser, loginUser, logOutUser};
 
     return (
         <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

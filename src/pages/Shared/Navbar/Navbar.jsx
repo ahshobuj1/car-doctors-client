@@ -1,7 +1,36 @@
 import {Link, NavLink} from 'react-router-dom';
 import logo from '../../../assets/icons/logo.svg';
+import {useContext} from 'react';
+import {AuthContext} from '../../../context/UserContext';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
+    const {user, logOutUser} = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to log out!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, LogOut it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logOutUser()
+                    .then(() => {
+                        Swal.fire({
+                            title: 'Logged Out!',
+                            text: 'Your account has been logged out.',
+                            icon: 'success',
+                        });
+                    })
+                    .catch((err) => console.log(err.message));
+            }
+        });
+    };
+
     const navItems = (
         <>
             <li>
@@ -19,6 +48,25 @@ const Navbar = () => {
             <li>
                 <NavLink to="/contact">Contact</NavLink>
             </li>
+
+            {user ? (
+                <>
+                    <button
+                        onClick={handleLogOut}
+                        className="btn btn-neutral mr-3 btn-sm">
+                        LogOut
+                    </button>
+                    <span className="text-xs md:text-sm pr-1 md:flex items-center">
+                        {user.email}
+                    </span>
+                </>
+            ) : (
+                <Link to="/signin">
+                    <button className="btn btn-neutral mr-3 btn-sm">
+                        Login
+                    </button>
+                </Link>
+            )}
         </>
     );
 
@@ -58,12 +106,6 @@ const Navbar = () => {
                 <ul className="menu menu-horizontal px-1">{navItems}</ul>
             </div>
             <div className="navbar-end">
-                <Link to="/signin">
-                    <button className="btn btn-neutral mr-3 btn-sm">
-                        Login
-                    </button>
-                </Link>
-
                 <button className="btn btn-outline text-orange-600 border-orange-600">
                     Appointment
                 </button>
