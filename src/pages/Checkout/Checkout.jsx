@@ -1,22 +1,23 @@
 import {useContext} from 'react';
 import {useLoaderData} from 'react-router-dom';
 import {AuthContext} from '../../context/UserContext';
+import Swal from 'sweetalert2';
 
 const Checkout = () => {
     const service = useLoaderData();
-    const {title, img} = service;
+    const {title, img, price} = service;
     const {user} = useContext(AuthContext);
 
     const handleCheckout = (e) => {
         e.preventDefault();
         const form = e.target;
-        const size = form.size.value;
+        const price = form.price.value;
         const date = form.date.value;
         const titleName = form.tname.value;
         const email = form.email.value;
         const message = form.message.value;
 
-        const bookings = {size, date, titleName, img, email, message};
+        const bookings = {price, date, titleName, img, email, message};
         console.log(bookings);
         form.reset();
 
@@ -28,6 +29,13 @@ const Checkout = () => {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
+                if (data.insertedId) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success...',
+                        text: 'Order saved at My Booking',
+                    });
+                }
             })
             .catch((err) => console.log(err.message));
     };
@@ -63,7 +71,8 @@ const Checkout = () => {
                         <div>
                             <input
                                 type="text"
-                                name="size"
+                                name="price"
+                                value={price}
                                 id=""
                                 required
                                 placeholder="Size"
