@@ -4,6 +4,7 @@ import {FaGoogle, FaFacebook, FaLinkedin} from 'react-icons/fa';
 import {useContext} from 'react';
 import {AuthContext} from '../../context/UserContext';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const SignUp = () => {
     const {createUser, signInWithGoogle} = useContext(AuthContext);
@@ -26,6 +27,7 @@ const SignUp = () => {
                     title: 'Success...',
                     text: 'User Created successfully',
                 });
+
                 navigate(location?.state ? location?.state : '/');
             })
             .catch((err) => console.log(err.message));

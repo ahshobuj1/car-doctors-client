@@ -4,6 +4,7 @@ import {FaGoogle, FaFacebook, FaLinkedin} from 'react-icons/fa';
 import {useContext} from 'react';
 import {AuthContext} from '../../context/UserContext';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const SignIn = () => {
     const {loginUser, signInWithGoogle} = useContext(AuthContext);
@@ -27,7 +28,22 @@ const SignIn = () => {
                     title: 'Success...',
                     text: 'User Login successfully',
                 });
-                navigate(location?.state ? location?.state : '/');
+
+                axios
+                    .post(
+                        'http://localhost:5000/jwt',
+                        {email: email},
+                        {withCredentials: true}
+                    )
+                    .then((res) => {
+                        console.log(res.data);
+                    })
+                    .catch((err) => console.log(err.message));
+
+                // create jwt token
+                //axios.post('')
+
+                //navigate(location?.state ? location?.state : '/');
             })
             .catch((err) => console.log(err.message));
     };
