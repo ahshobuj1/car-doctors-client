@@ -17,12 +17,10 @@ const Booking = () => {
                 setBookings(data.data);
             })
             .catch((err) => console.log(err.catch));
-    }, []);
+    }, [user]);
 
     return (
         <section>
-            <h1>bookings : {bookings.length}</h1>
-
             <div className="overflow-x-auto">
                 <table className="table">
                     {/* head */}
