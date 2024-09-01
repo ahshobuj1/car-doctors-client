@@ -1,23 +1,19 @@
 import {useContext, useEffect, useState} from 'react';
 import BookingTable from './BookingTable';
 import {AuthContext} from '../../context/UserContext';
-import axios from 'axios';
+import UseAxiosSecure from '../../hooks/UseAxiosSecure';
 
 const Booking = () => {
     const {user} = useContext(AuthContext);
     const [bookings, setBookings] = useState([]);
+    const customAxios = UseAxiosSecure();
 
     useEffect(() => {
-        axios
-            .get(`http://localhost:5000/bookings?email=${user.email}`, {
-                withCredentials: true,
-            })
-            .then((data) => {
-                console.log(data.data);
-                setBookings(data.data);
-            })
+        customAxios
+            .get(`/bookings?email=${user.email}`)
+            .then((data) => setBookings(data.data))
             .catch((err) => console.log(err.catch));
-    }, [user]);
+    }, [customAxios, user.email]);
 
     return (
         <section>

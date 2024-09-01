@@ -1,13 +1,14 @@
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import sighInImg from '../../assets/images/login/login.svg';
 import {FaGoogle, FaFacebook, FaLinkedin} from 'react-icons/fa';
-import {useContext} from 'react';
-import {AuthContext} from '../../context/UserContext';
 import Swal from 'sweetalert2';
-//import axios from 'axios';
+//import {useContext} from 'react';
+//import {AuthContext} from '../../context/UserContext';
+import useAuth from '../../hooks/useAuth';
 
 const SignIn = () => {
-    const {loginUser, signInWithGoogle} = useContext(AuthContext);
+    //const {loginUser, signInWithGoogle} = useContext(AuthContext);
+    const {loginUser, signInWithGoogle} = useAuth();
     const location = useLocation();
     console.log(location);
     const navigate = useNavigate();

@@ -9,7 +9,7 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
 } from 'firebase/auth';
-import axios from 'axios';
+import UseAxiosSecure from '../hooks/UseAxiosSecure';
 
 export const AuthContext = createContext();
 const provider = new GoogleAuthProvider();
@@ -17,6 +17,7 @@ const provider = new GoogleAuthProvider();
 const UserContext = ({children}) => {
     const [user, setUser] = useState('');
     const [loading, setLoading] = useState(true);
+    const customAxios = UseAxiosSecure();
 
     // Create user with email and password
     const createUser = (email, password) => {
@@ -52,10 +53,8 @@ const UserContext = ({children}) => {
                 setLoading(false);
 
                 // jwt token
-                axios
-                    .post('http://localhost:5000/jwt', userEmail, {
-                        withCredentials: true,
-                    })
+                customAxios
+                    .post('/jwt', userEmail)
                     .then((res) => console.log(res.data))
                     .catch((err) => console.log(err.message));
             } else {
@@ -63,16 +62,14 @@ const UserContext = ({children}) => {
                 setLoading(false);
 
                 // clear jwt token cookie
-                axios
-                    .post('http://localhost:5000/logout', userEmail, {
-                        withCredentials: true,
-                    })
+                customAxios
+                    .post('/logout', userEmail)
                     .then((res) => console.log(res.data));
             }
         });
 
         return () => unsubscribe();
-    }, [user]);
+    }, [customAxios, user?.email]);
 
     const authInfo = {
         user,

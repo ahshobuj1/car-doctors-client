@@ -1,11 +1,13 @@
 import {Link, NavLink} from 'react-router-dom';
 import logo from '../../../assets/icons/logo.svg';
-import {useContext} from 'react';
-import {AuthContext} from '../../../context/UserContext';
 import Swal from 'sweetalert2';
+import useAuth from '../../../hooks/useAuth';
+//import {useContext} from 'react';
+//import {AuthContext} from '../../../context/UserContext';
 
 const Navbar = () => {
-    const {user, logOutUser} = useContext(AuthContext);
+    //const {user, logOutUser} = useContext(AuthContext);
+    const {user, logOutUser} = useAuth();
 
     const handleLogOut = () => {
         Swal.fire({
